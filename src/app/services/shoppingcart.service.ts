@@ -140,54 +140,18 @@ export class ShoppingCartService {
         return html;
     }
 
-    async update(id: string, itemUpdateRequest: ItemUpdateRequest) {
-        const item = await ItemModel.findById(id);
-        if (!item) throw CustomError.notFound('Item not found');
-        const typeItem = await TypeItemModel.findOne({code: itemUpdateRequest.type_item});
-        if (!typeItem) throw CustomError.badRequest('Type item not exists');
-
+    async getShoppingCart(id: string) {
         try {
-            const itemUpdated = await ItemModel.findByIdAndUpdate(id, {
-                ...itemUpdateRequest,
-                type_item: typeItem.id
+            const shoppingCart = await ShoppingCartModel.findById(id);
+            const shoppingCartDetail = await ShoppingCartDetailModel.find({
+                shopping_cart: shoppingCart!._id
             });
 
-            return ItemEntity.fromObject(itemUpdated!);
-        } catch (error) {
-            console.log(error);
-            throw CustomError.internalServer('Error innesperado');
-        }
-    }
+            if (!shoppingCart) throw CustomError.notFound('Register not found');
 
-    async getItems() {
-        try {
-            const items = await ItemModel.find();
-
-            return items.map(ItemEntity.fromObject);
-        } catch (error) {
-            throw CustomError.internalServer('Error innesperado');
-        }
-    }
-
-    async getItem(id: string) {
-        try {
-            const item = await ItemModel.findById(id);
-
-            if (!item) throw CustomError.notFound('Item not found');
-
-            return ItemEntity.fromObject(item!);
+            return this.generateBillHTML(shoppingCart, shoppingCartDetail);
         } catch (error) {
             throw CustomError.notFound('Item not found');
-        }
-    }
-
-    async getTypesItems() {
-        try {
-            const typesItems = await TypeItemModel.find();
-
-            return typesItems;
-        } catch (error) {
-            throw CustomError.internalServer('Error innesperado');
         }
     }
 }

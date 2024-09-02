@@ -25,4 +25,11 @@ export class ShoppingCartController {
         .then(data => res.status(201).send(data))
         .catch(error => this.handleError(error, res));
     }
+
+    show = (req: Request, res: Response) => {
+        const { id } = req.params;
+        this.shoppingCartService.getShoppingCart(id)
+        .then(data => res.status(200).send(data))
+        .catch(error => this.handleError(error, res));
+    }
 }

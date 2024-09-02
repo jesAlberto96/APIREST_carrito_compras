@@ -19,15 +19,14 @@ export class ItemController {
 
     index = (req: Request, res: Response) => {
         this.itemService.getItems()
-        .then(data => res.status(201).json(data))
+        .then(data => res.status(200).json(data))
         .catch(error => this.handleError(error, res));
     }
 
     show = (req: Request, res: Response) => {
         const { id } = req.params;
-        // res.status(201).json(id);
         this.itemService.getItem(id)
-        .then(data => res.status(201).json(data))
+        .then(data => res.status(200).json(data))
         .catch(error => this.handleError(error, res));
     }
 
@@ -54,7 +53,7 @@ export class ItemController {
 
     getTypesItems = (req: Request, res: Response) => {
         this.itemService.getTypesItems()
-        .then(data => res.status(201).json(data))
+        .then(data => res.status(200).json(data))
         .catch(error => this.handleError(error, res));
     }
 }

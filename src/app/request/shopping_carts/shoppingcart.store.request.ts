@@ -7,6 +7,7 @@ export class ShoppingCartStoreRequest {
         const { items } = object;
 
         if (!items) return ['items is required'];
+        if (items.length === 0) return ['items is empty'];
 
         for (const item of items) {
             if (!item.item) return ['Item is required'];

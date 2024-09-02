@@ -14,6 +14,7 @@ export class Routes {
 
     // Definir las rutas
     router.post('', controller.store);
+    router.get('/:id', controller.show);
 
     return router;
   }
